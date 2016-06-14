@@ -1,0 +1,9 @@
+V = 0
+DYNAMIC_GHC_PROGRAMS = NO
+INTEGER_LIBRARY = integer-simple
+GhcLibWays      = v
+SRC_HC_OPTS     = -O -H64m
+GhcStage1HcOpts = -O -fvia-c
+GhcStage2HcOpts = -O2 -fvia-c
+GhcHcOpts       = -Rghc-timing
+GhcLibHcOpts    = -O2

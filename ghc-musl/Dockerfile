@@ -2,7 +2,7 @@ FROM alpine:latest
 
 ENV GHC_VERSION      7.10.3
 ENV PATCHELF_VERSION 0.8
-ENV CABAL_VERSION    1.22.6.0
+ENV CABAL_VERSION    1.22.8.0
 
 WORKDIR /tmp
 COPY get-last-layer.sh build.mk ./
@@ -44,7 +44,7 @@ RUN : "Layer 2: cabal-install, but only the binary, no executables" && \
     sed -i 's/export TMPDIR=.*/export TMPDIR=$(mktemp -t cabal-XXXXXX -d)/' bootstrap.sh && \
     EXTRA_CONFIGURE_OPTS=--disable-library-profiling ./bootstrap.sh && \
     : Clean up to keep the image small && \
-    rm -rf /tmp/* /root/.ghc /root/.cabal/{lib,share}
+    rm -rf /tmp/*
 
 # Files For stack
 COPY entrypoint.sh /
