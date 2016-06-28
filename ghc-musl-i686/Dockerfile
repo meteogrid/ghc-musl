@@ -5,9 +5,6 @@ ENV PATCHELF_VERSION 0.8
 ENV CABAL_VERSION    1.22.6.0
 
 WORKDIR /tmp
-COPY ghc-7.8.4-x86_64-unknown-linux-musl.tar.xz build.mk ./
-RUN tar xJf ghc-7.8.4-x86_64-unknown-linux-musl.tar.xz -C / \
- && rm ghc-7.8.4-x86_64-unknown-linux-musl.tar.xz
 
 RUN : "Layer 0: Install development tools" && \
     apk --update add curl xz alpine-sdk perl gmp-dev file gmp openssh openssl zlib-dev strace vim less jq ncurses-dev bash autoconf pcre-dev && \
@@ -17,7 +14,10 @@ RUN : "Layer 0: Install development tools" && \
     ./configure && \
     make install
 
+COPY build.mk ./
 RUN : "Layer 1: fully working basic GHC in /usr/local" && \
+    mkdir /opt && \
+    curl -L https://s3-eu-west-1.amazonaws.com/sigym4/thirdparty/ghc-7.8.4-x86_64-unknown-linux-musl.tar | tar xJ -C / && \
     curl -L https://www.haskell.org/ghc/dist/$GHC_VERSION/ghc-$GHC_VERSION-src.tar.bz2 | tar xj && \
     cd ghc-$GHC_VERSION && \
     cp -v /tmp/build.mk mk/build.mk && \
